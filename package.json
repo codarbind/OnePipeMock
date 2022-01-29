@@ -1,0 +1,33 @@
+{
+  "name": "onepipe",
+  "version": "1.0.0",
+  "description": "mock project to relate with onepipe apis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/codarbind/onepipe"
+  },
+  "keywords": [
+    "onepipe",
+    "open",
+    "account",
+    "get",
+    "balance",
+    "get",
+    "balance",
+    "collect",
+    "abdwahab",
+    "codarbind"
+  ],
+  "author": "Abdwahab Adekola",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "md5": "^2.3.0"
+  }
+}
