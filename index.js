@@ -4,10 +4,10 @@ const router = express.Router()
 require('dotenv').config()
 
 const account = require('./controllers/account')
-
+const balance = require('./controllers/balance')
 
 app.use(account)
-
+app.use(balance)
 
 
 
