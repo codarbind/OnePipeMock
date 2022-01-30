@@ -11,13 +11,12 @@ router.use(express.urlencoded({ extended: true }))
 router.post('/account',(req,res)=>{
 
 //data validation
-let { auth_provider, amount, firstname, surname, middlename, email, mobile_no, name_on_account, dob, gender, title, address_line_1, address_line_2, city, state, country} = req.body
+let { auth_provider, customer_ref, amount, firstname, surname, middlename, email, mobile_no, name_on_account, dob, gender, title, address_line_1, address_line_2, city, state, country} = req.body
 
-if(!( auth_provider && amount && firstname && surname && email && mobile_no && name_on_account && dob && gender && title && address_line_1 && city && state && country)) return res.send({message:'supply all compulsory inputs'})
+if(!( auth_provider && customer_ref && amount && firstname && surname && email && mobile_no && name_on_account && dob && gender && title && address_line_1 && city && state && country)) return res.send({message:'supply all compulsory inputs'})
 
 let request_ref = JSON.stringify(Math.random()* 1000000000000000000).slice(0,12)
 let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0,12)
-let customer_ref = JSON.stringify(Math.random()* 3000000000000000000).slice(0,12)
 
  data = JSON.stringify({
   "request_ref": request_ref,
