@@ -4,6 +4,7 @@ const axios = require('axios');
 const md5 = require('md5')
 const API_KEY = process.env.ONEPIPE_APIKEY
 const API_SECRET = process.env.ONEPIPE_SECRET
+const crypto = require('crypto')
 
 
 router.use(express.urlencoded({ extended: true }))
@@ -11,12 +12,26 @@ router.use(express.urlencoded({ extended: true }))
 router.post('/collect',(req,res)=>{
 
 //data validation
-let {auth_provider, type, customer_ref, amount, firstname, surname, middlename, email, mobile_no} = req.body
+let {auth_provider, type, pan, cvv, expDate, pin, customer_ref, amount, firstname, surname, middlename, email, mobile_no} = req.body
 
-if(!(auth_provider && type && customer_ref && amount && firstname && surname && email && mobile_no)) return res.send({message:'supply all compulsory inputs'})
+if(!(auth_provider && type && pan && cvv && expDate && pin && customer_ref && amount && firstname && surname && email && mobile_no)) return res.send({message:'supply all compulsory inputs'})
 
 let request_ref = JSON.stringify(Math.random()* 1000000000000000000).slice(0,12)
 let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0,12)
+let plainText = `${pan};${cvv};${expDate};${pin}`
+
+function encrypt(secretKey, plainText) {
+    const bufferedKey = Buffer.from(secretKey, 'utf16le');
+
+    const key = crypto.createHash('md5').update(bufferedKey).digest();
+    const newKey = Buffer.concat([key, key.slice(0, 8)]);
+    const IV = Buffer.alloc(8, '\0');
+
+    const cipher = crypto.createCipheriv('des-ede3-cbc', newKey, IV).setAutoPadding(true);
+    return cipher.update(plainText, 'utf8', 'base64') + cipher.final('base64');
+}
+
+let authSecure = encrypt(API_SECRET,plainText)
 
 
  data = JSON.stringify({
@@ -24,7 +39,7 @@ let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0
   "request_type": "transfer_funds",
   "auth": {
     "type": type,
-    "secure": null,
+    "secure": authSecure,
     "auth_provider": auth_provider,
     "route_mode": null
   },
