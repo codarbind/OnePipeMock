@@ -7,16 +7,22 @@ const API_SECRET = process.env.ONEPIPE_SECRET
 
 
 router.use(express.urlencoded({ extended: true }))
+router.use(express.json())
 
 router.post('/balance',(req,res)=>{
 
 //data validation
-let {auth_provider, customer_ref, amount, firstname, surname, middlename, email, mobile_no} = req.body
+let { account_number, email, mobile_no} = req.body
 
-if(!(auth_provider && customer_ref && amount && firstname && surname && email && mobile_no)) return res.send({message:'supply all compulsory inputs'})
+if(!(account_number && email && mobile_no)) return res.send({message:'supply all compulsory inputs'})
 
 let request_ref = JSON.stringify(Math.random()* 1000000000000000000).slice(0,12)
 let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0,12)
+
+//these should be gotten by backend, fetched from details from frontend
+let firstname = 'Julyt'
+let surname = 'Hokonw'
+let middlename = ''
 
 
  data = JSON.stringify({
@@ -25,7 +31,7 @@ let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0
   "auth": {
     "type": null,
     "secure": null,
-    "auth_provider": auth_provider,
+    "auth_provider": "DemoProvider",
     "route_mode": null
   },
   "transaction": {
@@ -35,7 +41,7 @@ let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0
     "transaction_ref_parent": null,
     "amount": 0,
     "customer": {
-      "customer_ref": customer_ref,//"DemoApp_Customer007",
+      "customer_ref": account_number,//"DemoApp_Customer007",
       "firstname": firstname,
       "surname": surname,
       "email": email,
@@ -59,7 +65,7 @@ var config = {
 
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify({successResponse:response.data}))
+  //console.log(JSON.stringify({successResponse:response.data}))
   res.status(200).json({message:'success',successResponse:response.data})
 })
 .catch(function (error) {
