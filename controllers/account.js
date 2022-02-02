@@ -11,7 +11,7 @@ router.use(express.json())
 
 router.post('/account',(req,res)=>{
 
-  console.log({body:req.body})
+
 
 //data validation
 let { firstname, surname, middlename, email, mobile_no, name_on_account, dob, gender, title, address_line_1, address_line_2, city, state, country} = req.body
@@ -76,7 +76,7 @@ var config = {
 
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify({successResponse:response.data}))
+  //console.log(JSON.stringify({successResponse:response.data}))
   res.status(200).json({message:'success',successResponse:response.data})
 })
 .catch(function (error) {
@@ -84,7 +84,7 @@ axios(config)
   res.status(400).json({message:'there was an error'})
 });
 
-	console.log('open account route')
+	console.log('open account pipe')
 	
 })
 

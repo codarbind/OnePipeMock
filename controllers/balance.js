@@ -73,7 +73,7 @@ axios(config)
   res.status(400).json({message:'there was an error'})
 });
 
-	console.log('account balance route')
+	console.log('account balance pipe')
 	
 })
 

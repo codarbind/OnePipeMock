@@ -11,10 +11,15 @@ router.use(express.urlencoded({ extended: true }))
 
 router.post('/collect',(req,res)=>{
 
-//data validation
-let {auth_provider, type, pan, cvv, expDate, pin, customer_ref, amount, firstname, surname, middlename, email, mobile_no} = req.body
+  let firstname, surname
 
-if(!(auth_provider && type && pan && cvv && expDate && pin && customer_ref && amount && firstname && surname && email && mobile_no)) return res.send({message:'supply all compulsory inputs'})
+  firstname = 'Jiuyt'
+  surname = 'Posip'
+
+//data validation
+let { type, pan, cvv, expDate, pin, account_number, email, mobile_no} = req.body
+
+if(!(type && pan && cvv && expDate && pin && account_number && email && mobile_no)) return res.send({message:'supply all compulsory inputs'})
 
 let request_ref = JSON.stringify(Math.random()* 1000000000000000000).slice(0,12)
 let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0,12)
@@ -40,7 +45,7 @@ let authSecure = encrypt(API_SECRET,plainText)
   "auth": {
     "type": type,
     "secure": authSecure,
-    "auth_provider": auth_provider,
+    "auth_provider": "DemoProvider",
     "route_mode": null
   },
   "transaction": {
@@ -48,9 +53,9 @@ let authSecure = encrypt(API_SECRET,plainText)
     "transaction_ref": transaction_ref,
     "transaction_desc": "making payments",
     "transaction_ref_parent": null,
-    "amount": amount,
+    "amount": 0,
     "customer": {
-      "customer_ref": customer_ref,//"DemoApp_Customer007",
+      "customer_ref": account_number,//"DemoApp_Customer007",
       "firstname": firstname,
       "surname": surname,
       "email": email,
@@ -74,7 +79,7 @@ var config = {
 
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify({successResponse:response.data}))
+  //console.log(JSON.stringify({successResponse:response.data}))
   res.status(200).json({message:'success',successResponse:response.data})
 })
 .catch(function (error) {
