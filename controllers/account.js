@@ -7,24 +7,27 @@ const API_SECRET = process.env.ONEPIPE_SECRET
 
 
 router.use(express.urlencoded({ extended: true }))
+router.use(express.json())
 
 router.post('/account',(req,res)=>{
 
-//data validation
-let { auth_provider, customer_ref, amount, firstname, surname, middlename, email, mobile_no, name_on_account, dob, gender, title, address_line_1, address_line_2, city, state, country} = req.body
+  console.log({body:req.body})
 
-if(!( auth_provider && customer_ref && amount && firstname && surname && email && mobile_no && name_on_account && dob && gender && title && address_line_1 && city && state && country)) return res.send({message:'supply all compulsory inputs'})
+//data validation
+let { firstname, surname, middlename, email, mobile_no, name_on_account, dob, gender, title, address_line_1, address_line_2, city, state, country} = req.body
+
+if(!( firstname && surname && email && mobile_no && name_on_account && dob && gender && title && address_line_1 && address_line_2 && city && state && country)) return res.send({message:'supply all compulsory inputs'})
 
 let request_ref = JSON.stringify(Math.random()* 1000000000000000000).slice(0,12)
 let transaction_ref = JSON.stringify(Math.random()* 2000000000000000000).slice(0,12)
-
+let customer_ref = JSON.stringify(Math.random()* 4000000000000000000).slice(0,12)
  data = JSON.stringify({
   "request_ref": request_ref,
   "request_type": "open_account",
   "auth": {
     "type": null,
     "secure": null,
-    "auth_provider": auth_provider,
+    "auth_provider": "Demoprovider",
     "route_mode": null
   },
   "transaction": {
